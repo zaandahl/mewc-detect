@@ -4,7 +4,7 @@ Docker container for MegaDetector
 The following environment variables are supported for configuration:
 
 | variable | default | description |
-------------------------------------
+| -------------------------------- |
 | INPUT_DIR | "/images/" | A mounted volume containing images to process |
 | MD_MODEL | "md_v4.1.0.pb" | The MegaDetector model file (can be overridden under /code) |
 | IMG_FILE | "" | A specific image filename to process. Empty means process entire directory |
