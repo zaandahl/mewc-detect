@@ -1,7 +1,7 @@
 # MegaDetector Docker 4.1
 This repository contains code to build a Docker container for running [MegaDetector](https://github.com/microsoft/CameraTraps/blob/main/megadetector.md). You can use this to process camera trap images with GPU support without having to install TensorFlow or CUDA. The only software you need on your computer is [Docker](https://www.docker.com). 
 
-The container invokes the script `run_tf_detector_batch.py` using MegaDetector v4.1. The version tags in this repo are matched to the version tags for the MegaDetector repo.
+The container invokes the script `run_tf_detector_batch.py` using MegaDetector v4.1. The version tags in this repo are matched to the version tags for the MegaDetector repo. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-flow) that is built on TensorFlow with some additional Python packages.
 
 You can supply arguments via an environment file where the contents of that file are in the following format with one entry per line:
 ```
