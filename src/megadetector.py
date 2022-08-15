@@ -1,8 +1,9 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import yaml
-import detection.run_tf_detector_batch as run_tf_detector_batch
+import detection.run_detector_batch as run_detector_batch
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 
 def read_yaml(file_path):
     with open(file_path, "r") as f:
@@ -18,11 +19,13 @@ def create_command(config):
     if(config["CHECKPOINT_FILE"] is not None): res_checkpoint_str = " --resume_from_checkpoint " + config["CHECKPOINT_FILE"]
     else: res_checkpoint_str = ""
     if(config["NCORES"] is not None): ncores_str = " --ncores " + config["NCORES"]
+    else: ncores_str = ""
     detector_file_str = " /code/" + str(config["MD_MODEL"]) + " "
-    image_file_str = str(config["INPUT_DIR"]) + "/" + str(config["IMG_FILE"]) + " "
+    if(config["IMG_FILE"] is not None): image_file_str = str(config["INPUT_DIR"]) + "/" + str(config["IMG_FILE"]) + " "
+    else: image_file_str = str(config["INPUT_DIR"]) + " "
     output_file_str = str(config["INPUT_DIR"]) + "/" + str(config["MD_FILE"])
 
-    md_cmd = "python /code/cameratraps/detection/run_tf_detector_batch.py " + \
+    md_cmd = "python /code/cameratraps/detection/run_detector_batch.py " + \
     recursive_str + \
     rel_filename_str + \
     threshold_str + \
@@ -40,4 +43,5 @@ for conf_key in config.keys():
         config[conf_key] = os.environ[conf_key]
 
 md_cmd = create_command(config)
+print(md_cmd)
 os.system(md_cmd)

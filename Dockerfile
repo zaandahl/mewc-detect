@@ -5,7 +5,7 @@ FROM zaandahl/mewc-flow:latest
 WORKDIR /code
 
 # clone megadetector repos
-RUN git clone --depth 1 -b v4.1 https://github.com/Microsoft/cameratraps
+RUN git clone --depth 1 https://github.com/Microsoft/cameratraps
 RUN git clone --depth 1 https://github.com/Microsoft/ai4eutils
 ENV PYTHONPATH "${PYTHONPATH}:/code/cameratraps:/code/ai4eutils"
 
