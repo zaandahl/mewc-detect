@@ -14,6 +14,10 @@ def create_command(config):
     else: recursive_str = ""
     if(config["RELATIVE_FILENAMES"]): rel_filename_str = " --output_relative_filenames"
     else: rel_filename_str = ""
+    if(config["QUIET"]): quiet_str = " --quiet"
+    else: quiet_str = ""
+    if(config["IMAGE_QUEUE"]): image_queue_str = " --use_image_queue"
+    else: image_queue_str = ""
     threshold_str = " --threshold=" + str(config["THRESHOLD"])
     checkpoint_freq_str = " --checkpoint_frequency=" + str(config["CHECKPOINT_FREQ"])
     if(config["CHECKPOINT_FILE"] is not None): res_checkpoint_str = " --resume_from_checkpoint " + config["CHECKPOINT_FILE"]
@@ -28,6 +32,8 @@ def create_command(config):
     md_cmd = "python /code/cameratraps/detection/run_detector_batch.py " + \
     recursive_str + \
     rel_filename_str + \
+    quiet_str + \
+    image_queue_str + \
     threshold_str + \
     checkpoint_freq_str + \
     res_checkpoint_str + \
