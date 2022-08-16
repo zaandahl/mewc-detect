@@ -1,9 +1,9 @@
-# MegaDetector Docker 4.1
+# MegaDetector Docker 5.0
 
 ## Introduction
 This repository contains code to build a Docker container for running [MegaDetector](https://github.com/microsoft/CameraTraps/blob/main/megadetector.md). You can use this to process camera trap images with GPU support without having to install TensorFlow or CUDA. The only software you need on your computer is [Docker](https://www.docker.com). 
 
-The container invokes the script `run_tf_detector_batch.py` using MegaDetector v4.1. The version tags in this repo are matched to the version tags for the MegaDetector repo. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-flow) that is built on TensorFlow with some additional Python packages.
+The container invokes the script `run_detector_batch.py` using MegaDetector. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-torch) that is built on PyTorch with additional Python packages for MegaDetector including TensorFlow to support the MegaDetector 4.0 model.
 
 You can supply arguments via an environment file where the contents of that file are in the following format with one entry per line:
 ```
@@ -12,11 +12,11 @@ VARIABLE=VALUE
 
 ## Usage
 
-After installing Docker you can run the container using a command similar to the following. Substitute `"$IN_DIR"` for your image directory and create the file `megadetector.env` with any options you wish to customise. 
+After installing Docker you can run the container using a command similar to the following. Substitute `"$IN_DIR"` for your image directory and create a text file `"$ENV_FILE"` with any config options you wish to override. 
 
 ```
-docker pull zaandahl/megadetector:v4.1
-docker run --env CUDA_VISIBLE_DEVICES=0 --env-file megadetector.env \
+docker pull zaandahl/megadetector:v5.0
+docker run --env CUDA_VISIBLE_DEVICES=0 --env-file "$ENV_FILE" \
     --gpus all --interactive --tty --rm \
     --volume "$IN_DIR":/images \
     zaandahl/megadetector
@@ -29,12 +29,14 @@ The following environment variables are supported for configuration (and their d
 | Variable | Default | Description |
 | ---------|---------|------------ |
 | INPUT_DIR | "/images/" | A mounted point containing images to process - must match the Docker command above |
-| MD_MODEL | "md_v4.1.0.pb" | The MegaDetector model file (can be overridden under /code) |
+| MD_MODEL | "md_v5a.0.0.pt" | The MegaDetector model file (can be overridden under /code) |
 | IMG_FILE | "" | A specific image filename to process. Empty means process entire directory |
 | MD_FILE | "md_out.json" | MegaDetector output file, will write to INPUT_DIR |
 | RECURSIVE | True | Recursive processing |
 | RELATIVE_FILENAMES | True | Use relative filenames |
+| QUIET | False | Quiet mode |
+| IMAGE_QUEUE | False | Use image queue |
 | THRESHOLD | 0.01 | MegaDetector threshold |
 | CHECKPOINT_FREQ | 100 | Checkpoint frequency |
-| CHECKPOINT_FILE | None | File to resume checkpointing from under INPUT_DIR |
-| NCORES | None | Number of CPU cores if GPU processing is unavailable |
+| CHECKPOINT_FILE | | File to resume checkpointing from under INPUT_DIR, empty for none |
+| NCORES | | Number of CPU cores if GPU processing is unavailable, empty if not used |

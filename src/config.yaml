@@ -1,5 +1,5 @@
 INPUT_DIR: "/images/"
-MD_MODEL: "md_v4.1.0.pb"
+MD_MODEL: "md_v5a.0.0.pt"
 IMG_FILE: 
 MD_FILE: "md_out.json"
 RECURSIVE: True
