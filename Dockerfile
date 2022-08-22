@@ -7,7 +7,7 @@ WORKDIR /code
 # clone megadetector repos
 RUN git clone --depth 1 https://github.com/Microsoft/cameratraps
 RUN git clone --depth 1 https://github.com/Microsoft/ai4eutils
-RUN git clone -b v6.2 ---depth 1 https://github.com/ultralytics/yolov5/
+RUN git clone ---depth 1 https://github.com/ultralytics/yolov5/
 ENV PYTHONPATH "${PYTHONPATH}:/code/cameratraps:/code/ai4eutils:/code/yolov5"
 
 # download the megadetector models
