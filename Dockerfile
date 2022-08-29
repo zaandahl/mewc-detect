@@ -23,6 +23,10 @@ WORKDIR /code/yolov5
 RUN git reset --hard c23a441c9df7ca9b1f275e8c8719c949269160d1
 WORKDIR /code
 ENV PYTHONPATH "${PYTHONPATH}:/code/cameratraps:/code/ai4eutils:/code/yolov5"
+ENV LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/opt/conda/lib"
+
+# Install cudnn for MD 4.1
+RUN conda install -c anaconda cudnn
 
 # copy the content of the local src directory to the working directory
 COPY src/ .
