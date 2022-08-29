@@ -1,11 +1,11 @@
 def create_command(config):
-    if(config["RECURSIVE"]): recursive_str = " --recursive"
+    if(config["RECURSIVE"] == 'True'): recursive_str = " --recursive"
     else: recursive_str = ""
-    if(config["RELATIVE_FILENAMES"]): rel_filename_str = " --output_relative_filenames"
+    if(config["RELATIVE_FILENAMES"] == 'True'): rel_filename_str = " --output_relative_filenames"
     else: rel_filename_str = ""
-    if(config["QUIET"]): quiet_str = " --quiet"
+    if(config["QUIET"] == 'True'): quiet_str = " --quiet"
     else: quiet_str = ""
-    if(config["IMAGE_QUEUE"]): image_queue_str = " --use_image_queue"
+    if(config["IMAGE_QUEUE"] == 'True'): image_queue_str = " --use_image_queue"
     else: image_queue_str = ""
     threshold_str = " --threshold=" + str(config["THRESHOLD"])
     checkpoint_freq_str = " --checkpoint_frequency=" + str(config["CHECKPOINT_FREQ"])
