@@ -24,3 +24,6 @@ UPPER_CONF: 0.9
 # SNIP
 SNIP_DIR: "snips"
 SNIP_SIZE: 600
+# EXIF
+EN_FILE: "en_out.pkl"
+EN_CSV: "en_out.csv"
