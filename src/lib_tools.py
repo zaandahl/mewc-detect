@@ -76,9 +76,12 @@ def process_detections(json_image, overlap, edge_dist, min_edges, upper_conf, lo
     return(valid_image)
 
 def contains_animal(json_image):
-    n = len(json_image['detections'])
-    animal_there = False
-    for i in range(0,n):
-        if json_image['detections'][i]['category'] == "1":
-            animal_there = True
-    return(animal_there)
+    if 'detections' in json_image.keys():
+        n = len(json_image['detections'])
+        animal_there = False
+        for i in range(0,n):
+            if json_image['detections'][i]['category'] == "1":
+                animal_there = True
+        return(animal_there)
+    else:
+        return(False)
