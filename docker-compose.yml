@@ -1,0 +1,8 @@
+services:
+  app:
+    image: zaandahl/megadetector
+    entrypoint: ["tail", "-f", "/dev/null"]
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      

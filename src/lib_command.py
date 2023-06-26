@@ -18,7 +18,7 @@ def create_command(config):
     else: image_file_str = str(config["INPUT_DIR"]) + " "
     output_file_str = str(config["INPUT_DIR"]) + "/" + str(config["MD_FILE"])
 
-    md_cmd = "python /code/cameratraps/detection/run_detector_batch.py " + \
+    md_cmd = "python /code/megadetector/detection/run_detector_batch.py " + \
     recursive_str + \
     rel_filename_str + \
     quiet_str + \
