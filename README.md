@@ -15,11 +15,11 @@ VARIABLE=VALUE
 After installing Docker you can run the container using a command similar to the following. Substitute `"$IN_DIR"` for your image directory and create a text file `"$ENV_FILE"` with any config options you wish to override. 
 
 ```
-docker pull zaandahl/megadetector:v5.0
+docker pull zaandahl/mewc-detector:v5.0
 docker run --env CUDA_VISIBLE_DEVICES=0 --env-file "$ENV_FILE" \
     --gpus all --interactive --tty --rm \
     --volume "$IN_DIR":/images \
-    zaandahl/megadetector
+    zaandahl/mewc-detector
 ```
 
 ## Config Options
