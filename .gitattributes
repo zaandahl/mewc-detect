@@ -1,0 +1,11 @@
+* text=auto   eol=lf
+*.R      text eol=lf diff=R
+*.Rmd    text eol=lf
+*.qmd    text eol=lf
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.sh     text eol=lf
+*.md     text eol=lf
+*.csv    text eol=lf
+*.qmd    text eol=lf
