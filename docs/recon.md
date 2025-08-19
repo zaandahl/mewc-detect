@@ -5,11 +5,11 @@ This document inventories the current repo, identifies MegaDetector coupling poi
 ## 1) Context Verification
 
 - Working dir: `/mnt/c/git/mewc-detect`
-- Git branch: `main` (tracking `origin/main`)
+- Git branch: `feat/md1000-recon` (tracking `origin/feat/md1000-recon`)
 - Remote: `https://github.com/zaandahl/mewc-detect.git`
-- Docker client: `Docker version 28.3.2, build 578ccf6`
-- Docker daemon access: not available in this environment (`permission denied`); baseline build not executed here
-- Default branch (remote): inferred `main`
+- Docker client: `Docker version 28.3.2`
+- Docker daemon access: not reachable in this environment; baseline build not executed here
+- Default branch (remote): `main`
 - NVIDIA runtime: not checked (no container run in this module)
 
 ## 2) Repo Map (top two levels)
@@ -183,4 +183,3 @@ Breaking-change risks and mitigations:
 
 - Baseline (current): `docker build -t mewc-detect:baseline .`
 - Post-migration (Module 1): `docker build -t mewc-detect:md1000 .`
-
