@@ -33,7 +33,7 @@ The following environment variables are supported for configuration (and their d
 | Variable | Default | Description |
 | ---------|---------|------------ |
 | INPUT_DIR | "/images/" | A mounted point containing images to process - must match the Docker command above |
-| MD_MODEL | "md_v5a.0.0.pt" | The MegaDetector model file (can be overridden under /code) |
+| MD_MODEL | "md_v1000.0.0-redwood.pt" | The MegaDetector model file (can be overridden under /code) |
 | IMG_FILE | "" | A specific image filename to process. Empty means process entire directory |
 | MD_FILE | "md_out.json" | MegaDetector output file, will write to INPUT_DIR |
 | RECURSIVE | True | Recursive processing |
