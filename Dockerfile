@@ -16,11 +16,6 @@ RUN python -m megadetector.detection.run_detector_batch --help > /dev/null
 # Default model (overridable at runtime)
 ENV MD_MODEL=md_v1000.0.0-redwood.pt
 
-# download the megadetector models
-RUN wget -O /code/md_v4.1.0.pb https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
-RUN wget -O /code/md_v5a.0.0.pt https://github.com/agentmorris/MegaDetector/releases/download/v5.0/md_v5a.0.0.pt
-RUN wget -O /code/md_v5b.0.0.pt https://github.com/agentmorris/MegaDetector/releases/download/v5.0/md_v5b.0.0.pt
-
 # clone megadetector repos
 #RUN git clone https://github.com/Microsoft/cameratraps
 #WORKDIR /code/cameratraps
