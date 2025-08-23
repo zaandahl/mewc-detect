@@ -21,7 +21,5 @@ ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/conda/lib
 # copy the content of the local src directory to the working directory
 COPY src/ .
 
- 
-
 # run megadetector wrapper script
 CMD [ "python", "./megadetector.py" ]
