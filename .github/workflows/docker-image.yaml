@@ -46,3 +46,9 @@ jobs:
           push: ${{ github.event.base_ref =='refs/heads/main' && github.ref_type == 'tag' && !startsWith(github.ref, 'refs/tags/v0.')}}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
+
+      - name: Smoke: run detector help
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          docker run --rm ${{ env.IMG_NAME }}:${{ steps.metadata.outputs.version }} \
+            python -m megadetector.detection.run_detector_batch --help

@@ -26,6 +26,9 @@ docker run --env CUDA_VISIBLE_DEVICES=0 --env-file "$ENV_FILE" \
 
 With MDv1000 models, start with thresholds around 0.3–0.4 and tune for your dataset.
 
+### Switching from MDv5 to MDv1000
+MDv1000 models typically benefit from lower detection thresholds than MDv5; starting around ~0.3–0.4 often yields better recall. For best results, tune the `--threshold` on a small labeled subset of your data to calibrate precision/recall trade-offs before scaling up.
+
 ## Config Options
 
 The following environment variables are supported for configuration (and their default values are shown). Simply omit any variables you don't need to change and if you want to just use all defaults you can leave `--env-file megadetector.env` out of the command alltogether. 
