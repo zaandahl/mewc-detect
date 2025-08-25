@@ -22,4 +22,4 @@ ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/conda/lib
 COPY src/ .
 
 # run megadetector wrapper script
-CMD [ "python", "./megadetector.py" ]
+CMD [ "python", "./mewc_runner.py" ]
