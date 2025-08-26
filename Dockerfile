@@ -5,7 +5,9 @@ FROM zaandahl/mewc-torch:1.0.9
 WORKDIR /code
 
 # download the megadetector models
-RUN wget -O /code/md_v4.1.0.pb https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
+
+#RUN wget -O /code/md_v4.1.0.pb https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
+RUN wget -O /code/md_v4.1.0.pb https://lilawildlife.blob.core.windows.net/lila-wildlife/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
 RUN wget -O /code/md_v5a.0.0.pt https://github.com/agentmorris/MegaDetector/releases/download/v5.0/md_v5a.0.0.pt
 RUN wget -O /code/md_v5b.0.0.pt https://github.com/agentmorris/MegaDetector/releases/download/v5.0/md_v5b.0.0.pt
 
