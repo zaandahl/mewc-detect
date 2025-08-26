@@ -1,6 +1,5 @@
 # set base image (host OS)
-#FROM zaandahl/mewc-torch:1.0
-FROM zaandahl/mewc-torch
+FROM zaandahl/mewc-torch:1.0.9
 
 # set the working directory in the container
 WORKDIR /code
