@@ -52,4 +52,4 @@ RUN sed -i 's/return F.interpolate(input, self.size, self.scale_factor, self.mod
 RUN sed -i 's/recompute_scale_factor=self.recompute_scale_factor)//g' /opt/conda/lib/python3.10/site-packages/torch/nn/modules/upsampling.py
 
 # run megadetector wrapper script
-CMD [ "python", "./megadetector.py" ]
+CMD [ "python", "./mewc_detect.py" ]
