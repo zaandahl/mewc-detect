@@ -32,8 +32,11 @@ RUN git clone https://github.com/ecologize/yolov5/
 #WORKDIR /code
 #ENV PYTHONPATH "${PYTHONPATH}:/code/cameratraps:/code/ai4eutils:/code/yolov5"
 
-ENV PYTHONPATH "${PYTHONPATH}:/code/megadetector:/code/ai4eutils:/code/yolov5"
-ENV LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/opt/conda/lib"
+# key=value syntax + safe expansion + include inner package path
+ENV PYTHONPATH="/code/megadetector:/code/megadetector/megadetector:/code/ai4eutils:/code/yolov5${PYTHONPATH:+:${PYTHONPATH}}"
+ENV LD_LIBRARY_PATH="/opt/conda/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+
+
 
 # Install cudnn for MD 4.1
 #RUN conda install -c anaconda cudnn
