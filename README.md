@@ -7,6 +7,8 @@ This repository contains code to build a Docker container for running [MegaDetec
 
 The container runs MegaDetector via the package entrypoint `python -m megadetector.detection.run_detector_batch`. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-torch) that is built on PyTorch with additional Python packages for MegaDetector including TensorFlow to support the MegaDetector 4.0 model.
 
+Base image: `zaandahl/mewc-torch:py310-cu117-torch2.0.1-no-tf` (PyTorch-only; TF removed).
+
 You can supply arguments via an environment file where the contents of that file are in the following format with one entry per line:
 ```
 VARIABLE=VALUE
