@@ -1,4 +1,4 @@
-FROM zaandahl/mewc-torch:py310-cu117-torch2.0.1-no-tf
+FROM zaandahl/mewc-torch:2.0.0
 
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
