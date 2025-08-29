@@ -3,7 +3,7 @@ INPUT_DIR: "/images/"
 MD_FILE: "md_out.json"
 LOWER_CONF: 0.05
 # MEGADETECTOR
-MD_MODEL: "md_v5a.0.0.pt"
+MD_MODEL: "md_v1000.0.0-redwood.pt"
 IMG_FILE: 
 RECURSIVE: True
 RELATIVE_FILENAMES: True

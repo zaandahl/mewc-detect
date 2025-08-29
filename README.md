@@ -5,7 +5,9 @@
 ## Introduction
 This repository contains code to build a Docker container for running [MegaDetector](https://github.com/agentmorris/MegaDetector/blob/main/megadetector.md). You can use this to process camera trap images with GPU support without having to install TensorFlow or CUDA. The only software you need on your computer is [Docker](https://www.docker.com). 
 
-The container invokes the script `run_detector_batch.py` using MegaDetector. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-torch) that is built on PyTorch with additional Python packages for MegaDetector including TensorFlow to support the MegaDetector 4.0 model.
+The container runs MegaDetector via the package entrypoint `python -m megadetector.detection.run_detector_batch`. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-torch) that is built on PyTorch with additional Python packages for MegaDetector including TensorFlow to support the MegaDetector 4.0 model.
+
+Base image: `zaandahl/mewc-torch:py310-cu117-torch2.0.1-no-tf` (PyTorch-only; TF removed).
 
 You can supply arguments via an environment file where the contents of that file are in the following format with one entry per line:
 ```
@@ -24,6 +26,11 @@ docker run --env CUDA_VISIBLE_DEVICES=0 --env-file "$ENV_FILE" \
     zaandahl/mewc-detect
 ```
 
+With MDv1000 models, start with thresholds around 0.3–0.4 and tune for your dataset.
+
+### Switching from MDv5 to MDv1000
+MDv1000 models typically benefit from lower detection thresholds than MDv5; starting around ~0.3–0.4 often yields better recall. For best results, tune the `--threshold` on a small labeled subset of your data to calibrate precision/recall trade-offs before scaling up.
+
 ## Config Options
 
 The following environment variables are supported for configuration (and their default values are shown). Simply omit any variables you don't need to change and if you want to just use all defaults you can leave `--env-file megadetector.env` out of the command alltogether. 
@@ -31,7 +38,7 @@ The following environment variables are supported for configuration (and their d
 | Variable | Default | Description |
 | ---------|---------|------------ |
 | INPUT_DIR | "/images/" | A mounted point containing images to process - must match the Docker command above |
-| MD_MODEL | "md_v5a.0.0.pt" | The MegaDetector model file (can be overridden under /code) |
+| MD_MODEL | "md_v1000.0.0-redwood.pt" | The MegaDetector model file (can be overridden under /code) |
 | IMG_FILE | "" | A specific image filename to process. Empty means process entire directory |
 | MD_FILE | "md_out.json" | MegaDetector output file, will write to INPUT_DIR |
 | RECURSIVE | True | Recursive processing |

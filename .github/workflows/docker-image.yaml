@@ -19,8 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Debug
-        run: |
-          echo "github.ref -> {{ github.ref }}" 
+        run: echo "github.ref -> ${{ github.ref }}"
 
       - name: Docker metadata
         id: metadata
@@ -46,3 +45,12 @@ jobs:
           push: ${{ github.event.base_ref =='refs/heads/main' && github.ref_type == 'tag' && !startsWith(github.ref, 'refs/tags/v0.')}}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
+
+      - name: 'Check - run detector help'
+        if: ${{ github.ref_type == 'tag' }}
+        env:
+          IMAGE: ${{ env.IMG_NAME }}
+          TAG: ${{ steps.metadata.outputs.version }}
+        run: >
+          docker run --rm "${IMAGE}:${TAG}" python -m megadetector.detection.run_detector_batch --help
+
