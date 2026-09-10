@@ -1,56 +1,42 @@
-name: Build and publish a Docker image
+name: Build or publish a reviewed release
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-  pull_request:
-    branches:
-      - '*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (vX.Y.Z); publish only after integration review'
+        required: true
+        type: string
+      publish:
+        description: 'Publish this reviewed image to Docker Hub'
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
 jobs:
-  build:
-    name: Build & push Docker image
-    runs-on: ubuntu-latest
-    env:
-      IMG_NAME: ${{ github.repository }}
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Debug
-        run: echo "github.ref -> ${{ github.ref }}"
-
-      - name: Docker metadata
-        id: metadata
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ env.IMG_NAME }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
-            
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        if: ${{ github.ref_type == 'tag' }}
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: ${{ github.event.base_ref =='refs/heads/main' && github.ref_type == 'tag' && !startsWith(github.ref, 'refs/tags/v0.')}}
-          tags: ${{ steps.metadata.outputs.tags }}
-          labels: ${{ steps.metadata.outputs.labels }}
-
-      - name: 'Check - run detector help'
-        if: ${{ github.ref_type == 'tag' }}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Build exact source with explicit fixed parent
         env:
-          IMAGE: ${{ env.IMG_NAME }}
-          TAG: ${{ steps.metadata.outputs.version }}
-        run: >
-          docker run --rm "${IMAGE}:${TAG}" python -m megadetector.detection.run_detector_batch --help
-
+          VERSION: ${{ inputs.version }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          IMAGE="$REPOSITORY:${VERSION#v}"
+          docker build --tag "$IMAGE" .
+          docker image inspect "$IMAGE" --format '{{.Id}}'
+      - name: Publish after explicit dispatch choice
+        if: ${{ inputs.publish }}
+        env:
+          VERSION: ${{ inputs.version }}
+          REPOSITORY: ${{ github.repository }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$DOCKER_TOKEN" | docker login --username "$DOCKER_USERNAME" --password-stdin
+          docker push "$REPOSITORY:${VERSION#v}"
