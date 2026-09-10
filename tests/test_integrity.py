@@ -7,7 +7,7 @@ import pytest
 
 SRC = Path(__file__).resolve().parents[1] / 'src'
 sys.path.insert(0, str(SRC))
-from lib_command import create_command
+from lib_command import create_command, integer
 from lib_tools import process_detections, validate_detections
 
 
@@ -63,6 +63,18 @@ def test_argv_paths_remain_single_arguments(tmp_path):
 def test_invalid_config_rejected(tmp_path, changes):
     with pytest.raises((ValueError, TypeError)):
         create_command({**config(tmp_path), **changes})
+
+
+def test_min_edges_rejects_boolean_before_numeric_conversion():
+    with pytest.raises(ValueError, match='min_edges must be an integer between 0 and 4'):
+        process_detections({'detections': []}, .3, .02, True, .9, .05)
+
+
+@pytest.mark.parametrize('value', ['1.5', 'not-an-integer', None, float('nan')])
+def test_integer_malformed_values_raise_labelled_value_error(value):
+    with pytest.raises(ValueError, match='NCORES must be an integer') as error:
+        integer(value, 'NCORES')
+    assert error.value.__cause__ is None
 
 
 def test_symlink_output_escape_rejected(tmp_path):

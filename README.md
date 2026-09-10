@@ -2,14 +2,14 @@
 
 # mewc-detect
 
-The integrity changes in this checkout require the source builds described in [BUILDING.md](BUILDING.md). Existing DockerHub examples do not provide these fixes until a maintainer publishes a compatible release. Use the tested image ID or digest from the generated image lock.
+The integrity changes in this checkout require the source builds described in [BUILDING.md](BUILDING.md). Published legacy tags do not provide these fixes. Use the tested image ID or digest from the generated image lock.
 
 ## Introduction
 This repository contains code to build a Docker container for running [MegaDetector](https://github.com/agentmorris/MegaDetector/blob/main/megadetector.md). You can use this to process camera trap images with GPU support without having to install TensorFlow or CUDA. The only software you need on your computer is [Docker](https://www.docker.com). 
 
-The container runs MegaDetector via the package entrypoint `python -m megadetector.detection.run_detector_batch`. The Dockerfile is based on an image called [mewc-flow](https://github.com/zaandahl/mewc-torch) that is built on PyTorch with additional Python packages for MegaDetector including TensorFlow to support the MegaDetector 4.0 model.
-
-Base image: `zaandahl/mewc-torch:py310-cu117-torch2.0.1-no-tf` (PyTorch-only; TF removed).
+The container runs MegaDetector via `python -m megadetector.detection.run_detector_batch`.
+The Dockerfile extends the digest-pinned `zaandahl/mewc-detect:6.0.0` runtime
+and replaces its application source with the integrity fixes in this checkout.
 
 You can supply arguments via an environment file where the contents of that file are in the following format with one entry per line:
 ```
@@ -21,11 +21,12 @@ VARIABLE=VALUE
 After installing Docker you can run the container using a command similar to the following. Substitute `"$IN_DIR"` for your image directory and create a text file `"$ENV_FILE"` with any config options you wish to override. 
 
 ```
-docker pull zaandahl/mewc-detect
+# Set STAGE_IMAGE to this stage's immutable image ID or registry digest from the generated image lock.
+: "${STAGE_IMAGE:?Set the reviewed stage image}"
 docker run --env CUDA_VISIBLE_DEVICES=0 --env-file "$ENV_FILE" \
     --gpus all --interactive --tty --rm \
     --volume "$IN_DIR":/images \
-    zaandahl/mewc-detect
+    "$STAGE_IMAGE"
 ```
 
 With MDv1000 models, start with thresholds around 0.3–0.4 and tune for your dataset.
@@ -43,14 +44,14 @@ The following environment variables are supported for configuration (and their d
 | OUTPUT_DIR | INPUT_DIR | Optional separate writable directory for detector JSON/checkpoints |
 | MD_MODEL | "md_v1000.0.0-redwood.pt" | Supported model alias, absolute model file path, or model file relative to /code |
 | IMG_FILE | "" | A specific image filename to process. Empty means process entire directory |
-| MD_FILE | "md_out.json" | MegaDetector output file, will write to INPUT_DIR |
+| MD_FILE | "md_out.json" | MegaDetector output file, will write to OUTPUT_DIR |
 | RECURSIVE | True | Recursive processing |
 | RELATIVE_FILENAMES | True | Use relative filenames |
 | QUIET | False | Quiet mode |
 | IMAGE_QUEUE | False | Use image queue |
 | THRESHOLD | 0.01 | MegaDetector threshold |
 | CHECKPOINT_FREQ | 100 | Checkpoint frequency |
-| CHECKPOINT_FILE | | File to resume checkpointing from under INPUT_DIR, empty for none |
+| CHECKPOINT_FILE | | File to resume checkpointing from under OUTPUT_DIR, empty for none |
 | NCORES | | Number of CPU cores if GPU processing is unavailable, empty if not used |
 
 ## Pipeline integrity contract

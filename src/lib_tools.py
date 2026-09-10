@@ -106,7 +106,9 @@ def process_detections(json_image, overlap, edge_dist, min_edges, upper_conf, lo
                         ('upper_conf', upper_conf), ('lower_conf', lower_conf)]:
         if not math.isfinite(float(value)) or not 0 <= float(value) <= 1:
             raise ValueError(f'{name} must be finite and between 0 and 1')
-    if int(min_edges) != float(min_edges) or not 0 <= int(min_edges) <= 4:
+    if (isinstance(min_edges, bool)
+            or int(min_edges) != float(min_edges)
+            or not 0 <= int(min_edges) <= 4):
         raise ValueError('min_edges must be an integer between 0 and 4')
     n = len(json_image['detections'])
     if policy == DEFAULT_POLICY:

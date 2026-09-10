@@ -35,9 +35,14 @@ def relative_path(root, value, label):
 
 
 def integer(value, label, minimum=1):
-    if isinstance(value, bool) or str(value).strip() != str(int(value)):
+    if isinstance(value, bool):
         raise ValueError(f'{label} must be an integer')
-    parsed = int(value)
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError, OverflowError):
+        raise ValueError(f'{label} must be an integer') from None
+    if str(value).strip() != str(parsed):
+        raise ValueError(f'{label} must be an integer')
     if parsed < minimum:
         raise ValueError(f'{label} must be >= {minimum}')
     return parsed
