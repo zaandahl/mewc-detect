@@ -1,5 +1,6 @@
 # COMMON
 INPUT_DIR: "/images/"
+OUTPUT_DIR: # Default: INPUT_DIR; may be a separate writable output mount
 MD_FILE: "md_out.json"
 LOWER_CONF: 0.05
 # MEGADETECTOR
@@ -16,6 +17,7 @@ NCORES:
 # BOX
 BLANK_DIR: "blank"
 SUBFOLDER: True
+SUPPRESSION_POLICY: "category-confidence-v1"
 # BOX - MATRYOSHKA
 OVERLAP: 0.3
 EDGE_DIST: 0.02
