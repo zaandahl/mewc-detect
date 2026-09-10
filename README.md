@@ -2,6 +2,8 @@
 
 # mewc-detect
 
+The integrity changes in this checkout require the source builds described in [BUILDING.md](BUILDING.md). Existing DockerHub examples do not provide these fixes until a maintainer publishes a compatible release. Use the tested image ID or digest from the generated image lock.
+
 ## Introduction
 This repository contains code to build a Docker container for running [MegaDetector](https://github.com/agentmorris/MegaDetector/blob/main/megadetector.md). You can use this to process camera trap images with GPU support without having to install TensorFlow or CUDA. The only software you need on your computer is [Docker](https://www.docker.com). 
 
